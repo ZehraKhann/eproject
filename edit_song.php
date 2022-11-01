@@ -120,78 +120,94 @@
             <!-- Navbar End -->
 
 
-            <!-- Songs Start -->
+            <!-- Add album Start -->
+
+
             <div class="container-fluid pt-4 px-4">
-                <div class="bg-secondary text-center rounded p-4">
-                    <div class="d-flex align-items-center justify-content-between mb-4">
-                        <h6 class="mb-0">Songs</h6>
-                        <a href="">Show All</a>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table text-start align-middle table-bordered table-hover mb-0">
-                            <thead>
-                                <tr class="text-white">
-                                    
-                                    <th scope="col">S No.</th>
-                                    <th scope="col">Song Name</th>
-                                    <th scope="col">Song Artist</th>
-                                    <th scope="col">Audio Song</th>
-                                    <th scope="col">Video Song</th>
-                                    <th scope="col">Genre</th>
-                                    <th scope="col">Released Date</th>
-                                    <th scope="col">Category</th>
-                                   
-                                    <th scope="col"></th>
-                                    <th scope="col"></th>
-                                </tr>
-                            </thead>
-                            <tbody>
+                        <div class="bg-secondary rounded h-100 p-4">
+                            
+                           
+                            
+                            <h6 class="mb-4">Add Songs</h6>
                             <?php
-                            include 'config.php';
-                            $sql = "SELECT * FROM song";
-                            $result = mysqli_query($conn , $sql) or die ("Query Unsuccessful");
-                            if(mysqli_num_rows($result) > 0){
-                            ?>
-                                <tr>
-                                    <?php
-                                    while($row = mysqli_fetch_assoc($result)){
-                                    ?>
-                                     <td><?php echo $row['song_id'] ?></td>
-                                     <td><?php echo $row['song_name'] ?></td>
-                                     <td><?php echo $row['artist_name'] ?></td>
-                                     <td>
-                                     <audio controls>
-                                        <source src="<?php echo 'audio/'.$row['audio_song']?>" type="audio/ogg">
-                                     </audio>
-                                     </td>
-                                     <td>
-                                     <video width="320" height="240" controls>
-                                        <source src="<?php echo 'video/'.$row['video_song']?>" type="video/mp4">
-                                     </video>
-                                     </td>
-                                     <td><?php echo $row['genre'] ?></td>                                     
-                                     <td><?php echo $row['realesed_date'] ?></td>                                    
-                                     <td><?php echo $row['cat'] ?></td>
-                                     
-                                    
-                                     <td><a class="btn btn-sm btn-primary" href='edit_song.php?id=<?php echo $row['song_id'] ?>'>Edit</a></td>
-                                    
-                                    <td><a class="btn btn-sm btn-primary" href='delete_song.php?id=<?php echo $row['song_id'] ?>'>Delete</a></td>
-                                </tr>
-                                <?php } ?>
-                             </tbody>
-                             <?php }
-                            else{
-                            echo "<h4>No result found</h4>";
+                                include 'config.php';
+                                $song_id =$_GET['id'];
+                                $sql = "SELECT * FROM song  WHERE song_id = {$song_id}";
+                                $result = mysqli_query($conn , $sql) or die ("Query Unsuccessful");
+
+                                if(mysqli_num_rows($result) > 0){
+                                while($row = mysqli_fetch_assoc($result)){
+                                ?>
+                            <form action="updatesong.php" method="POST" enctype="multipart/form-data">
+
+                            <input type="hidden" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="song_id" value="<?php $row['song_id'];?>">
+                                
+                            <div class="mb-3">
+                            <?php
+                                $sql1 = "SELECT * FROM artist";
+                                $result1 = mysqli_query($conn , $sql1) or die ("Query Unsuccessful");
+
+                                if(mysqli_num_rows($result1) > 0){
+                                echo "<select class='form-select mb-3' name='artist_name'>"; 
+                                while($row1 = mysqli_fetch_assoc($result1)){
+                                if($row1['artist_name'] == $row1['artist_id']){
+                                $select = "selected";
+                                }
+                                else{
+                               $select = "";
+                               }
+
+
+                            echo "<option {$select} value='{$row1['artist_id']}'>{$row1['artist_name']}</option>";
                             }
-                            mysqli_close($conn);
-                            ?>   
-                            </tbody>
-                        </table>
-                    </div>
+                            echo "</select>";
+                            }
+                                 ?>
+                               
+                            </div>
+                                <div class="mb-3">
+                                    <label for="exampleInputEmail1" class="form-label">Audio Song</label>
+                                    <input type="file" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="audio_song" value="<?php echo $row['audio_song']; ?>">
+                                   
+                                </div>
+                                <div class="mb-3">
+                                    <label for="exampleInputEmail1" class="form-label">Video Song</label>
+                                    <input type="file" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="video_song" value="<?php echo $row['video_song']?>">
+                                   
+                                </div>
+                                <div class="mb-3">
+                                    <label for="exampleInputEmail1" class="form-label">Song Name</label>
+                                    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="song_name" value="<?php echo $row['song_name']?>">
+                                   
+                                </div>
+                                <div class="mb-3">
+                                    <label for="exampleInputEmail1" class="form-label">Genre</label>
+                                    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="genre" value="<?php echo $row['genre']?>">
+                                   
+                                </div>
+                                <div class="mb-3">
+                                    <label for="exampleInputEmail1" class="form-label">Category</label>
+                                    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="cat" value="<?php echo $row['cat']?>">
+                                   
+                                </div>
+                                <div class="mb-3">
+                                    <label for="exampleInputEmail1" class="form-label">Realesed Date</label>
+                                    <input type="date" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="rel" value="<?php echo $row['realesed_date']?>">
+                                   
+                                </div>
+                                
+                                
+                                <input class="submit btn btn-primary" type="submit" value="update" name="add"/>
+                            </form>
+                            <?php
+                            }
+                            }
+                            ?>
+                            
+                        </div>
                 </div>
-            </div>
-            <!-- Songs End -->
+                
+            <!-- Add album End -->
 
 
 

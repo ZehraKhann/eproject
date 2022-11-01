@@ -33,13 +33,13 @@
 
 <body>
     <div class="container-fluid position-relative d-flex p-0">
-        <!-- Spinner Start -->
+        <!-- Spinner Start --> 
         <div id="spinner" class="show bg-dark position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
             <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
                 <span class="sr-only">Loading...</span>
             </div>
         </div>
-        <!-- Spinner End -->
+         <!-- Spinner End -->
 
 
         <!-- Sidebar Start -->
@@ -120,78 +120,68 @@
             <!-- Navbar End -->
 
 
-            <!-- Songs Start -->
+            <!-- Album Start -->
             <div class="container-fluid pt-4 px-4">
                 <div class="bg-secondary text-center rounded p-4">
                     <div class="d-flex align-items-center justify-content-between mb-4">
-                        <h6 class="mb-0">Songs</h6>
+                        <h6 class="mb-0">Albums</h6>
                         <a href="">Show All</a>
+                        
+
                     </div>
                     <div class="table-responsive">
+
+                    
                         <table class="table text-start align-middle table-bordered table-hover mb-0">
                             <thead>
+                            
                                 <tr class="text-white">
                                     
                                     <th scope="col">S No.</th>
-                                    <th scope="col">Song Name</th>
-                                    <th scope="col">Song Artist</th>
-                                    <th scope="col">Audio Song</th>
-                                    <th scope="col">Video Song</th>
-                                    <th scope="col">Genre</th>
-                                    <th scope="col">Released Date</th>
-                                    <th scope="col">Category</th>
-                                   
+                                    <th scope="col">Album Name</th>
+                                    <th scope="col">Album Category</th>
+                                    <th scope="col">Album Image</th> 
                                     <th scope="col"></th>
                                     <th scope="col"></th>
+                                    
+                                    
                                 </tr>
                             </thead>
+
+                    <?php
+                       include 'config.php';
+                       $sql = "SELECT * FROM album JOIN artist WHERE album.album_name = artist.artist_id";
+                       $result = mysqli_query($conn , $sql) or die ("Query Unsuccessful");
+                       if(mysqli_num_rows($result) > 0){
+
+                    ?>
                             <tbody>
-                            <?php
-                            include 'config.php';
-                            $sql = "SELECT * FROM song";
-                            $result = mysqli_query($conn , $sql) or die ("Query Unsuccessful");
-                            if(mysqli_num_rows($result) > 0){
-                            ?>
+                            <?php while($row = mysqli_fetch_assoc($result)){ ?>               
                                 <tr>
-                                    <?php
-                                    while($row = mysqli_fetch_assoc($result)){
-                                    ?>
-                                     <td><?php echo $row['song_id'] ?></td>
-                                     <td><?php echo $row['song_name'] ?></td>
-                                     <td><?php echo $row['artist_name'] ?></td>
-                                     <td>
-                                     <audio controls>
-                                        <source src="<?php echo 'audio/'.$row['audio_song']?>" type="audio/ogg">
-                                     </audio>
-                                     </td>
-                                     <td>
-                                     <video width="320" height="240" controls>
-                                        <source src="<?php echo 'video/'.$row['video_song']?>" type="video/mp4">
-                                     </video>
-                                     </td>
-                                     <td><?php echo $row['genre'] ?></td>                                     
-                                     <td><?php echo $row['realesed_date'] ?></td>                                    
-                                     <td><?php echo $row['cat'] ?></td>
-                                     
+                                        
+                                    <td><?php echo $row['album_id'] ?></td>
+                                    <td><?php echo $row['artist_name'] ?></td>
+                                    <td><?php echo $row['cat'] ?></td>                                 
+                                    <td><img class="img-fluid img-thumbnail" src="<?php echo 'img/'.$row['album_image']?>"></td>
+                                    <td><a class="btn btn-sm btn-primary" href='edit_album.php?id=<?php echo $row['album_id'] ?>'>Edit</a></td>
+                                    <td><a class="btn btn-sm btn-primary" href='delete_album.php?id=<?php echo $row['album_id'] ?>'>Delete</a></td>
                                     
-                                     <td><a class="btn btn-sm btn-primary" href='edit_song.php?id=<?php echo $row['song_id'] ?>'>Edit</a></td>
-                                    
-                                    <td><a class="btn btn-sm btn-primary" href='delete_song.php?id=<?php echo $row['song_id'] ?>'>Delete</a></td>
                                 </tr>
                                 <?php } ?>
-                             </tbody>
-                             <?php }
-                            else{
-                            echo "<h4>No result found</h4>";
-                            }
-                            mysqli_close($conn);
-                            ?>   
                             </tbody>
+
+                    <?php }
+                    else{
+                    echo "<h4>No result found</h4>";
+                    }
+                    mysqli_close($conn);
+                    ?>
                         </table>
+                    
                     </div>
                 </div>
             </div>
-            <!-- Songs End -->
+            <!-- Album End -->
 
 
 

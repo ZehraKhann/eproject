@@ -120,11 +120,11 @@
             <!-- Navbar End -->
 
 
-            <!-- Songs Start -->
+            <!-- Artist Start -->
             <div class="container-fluid pt-4 px-4">
                 <div class="bg-secondary text-center rounded p-4">
                     <div class="d-flex align-items-center justify-content-between mb-4">
-                        <h6 class="mb-0">Songs</h6>
+                        <h6 class="mb-0">Artists</h6>
                         <a href="">Show All</a>
                     </div>
                     <div class="table-responsive">
@@ -133,50 +133,30 @@
                                 <tr class="text-white">
                                     
                                     <th scope="col">S No.</th>
-                                    <th scope="col">Song Name</th>
-                                    <th scope="col">Song Artist</th>
-                                    <th scope="col">Audio Song</th>
-                                    <th scope="col">Video Song</th>
-                                    <th scope="col">Genre</th>
-                                    <th scope="col">Released Date</th>
-                                    <th scope="col">Category</th>
-                                   
+                                    <th scope="col">Artist Name</th>
                                     <th scope="col"></th>
                                     <th scope="col"></th>
+                                    
                                 </tr>
                             </thead>
-                            <tbody>
                             <?php
                             include 'config.php';
-                            $sql = "SELECT * FROM song";
+                            $sql = "SELECT * FROM artist";
                             $result = mysqli_query($conn , $sql) or die ("Query Unsuccessful");
                             if(mysqli_num_rows($result) > 0){
                             ?>
-                                <tr>
-                                    <?php
+                            <tbody>
+                            <?php
                                     while($row = mysqli_fetch_assoc($result)){
                                     ?>
-                                     <td><?php echo $row['song_id'] ?></td>
-                                     <td><?php echo $row['song_name'] ?></td>
-                                     <td><?php echo $row['artist_name'] ?></td>
-                                     <td>
-                                     <audio controls>
-                                        <source src="<?php echo 'audio/'.$row['audio_song']?>" type="audio/ogg">
-                                     </audio>
-                                     </td>
-                                     <td>
-                                     <video width="320" height="240" controls>
-                                        <source src="<?php echo 'video/'.$row['video_song']?>" type="video/mp4">
-                                     </video>
-                                     </td>
-                                     <td><?php echo $row['genre'] ?></td>                                     
-                                     <td><?php echo $row['realesed_date'] ?></td>                                    
-                                     <td><?php echo $row['cat'] ?></td>
-                                     
+                                <tr>
+                                   
+                                    <td><?php echo $row['artist_id'] ?></td>
+                                    <td><?php echo $row['artist_name'] ?></td>
+                                    <td><a class="btn btn-sm btn-primary" href='edit_artist.php?id=<?php echo $row['artist_id'] ?>'>Edit</a></td>
                                     
-                                     <td><a class="btn btn-sm btn-primary" href='edit_song.php?id=<?php echo $row['song_id'] ?>'>Edit</a></td>
+                                    <td><a class="btn btn-sm btn-primary" href='delete_artist.php?id=<?php echo $row['artist_id'] ?>'>Delete</a></td>
                                     
-                                    <td><a class="btn btn-sm btn-primary" href='delete_song.php?id=<?php echo $row['song_id'] ?>'>Delete</a></td>
                                 </tr>
                                 <?php } ?>
                              </tbody>
@@ -185,13 +165,12 @@
                             echo "<h4>No result found</h4>";
                             }
                             mysqli_close($conn);
-                            ?>   
-                            </tbody>
+                            ?>
                         </table>
                     </div>
                 </div>
             </div>
-            <!-- Songs End -->
+            <!-- Artist End -->
 
 
 

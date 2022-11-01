@@ -120,78 +120,61 @@
             <!-- Navbar End -->
 
 
-            <!-- Songs Start -->
+            <!-- Add album Start -->
+
+
             <div class="container-fluid pt-4 px-4">
-                <div class="bg-secondary text-center rounded p-4">
-                    <div class="d-flex align-items-center justify-content-between mb-4">
-                        <h6 class="mb-0">Songs</h6>
-                        <a href="">Show All</a>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table text-start align-middle table-bordered table-hover mb-0">
-                            <thead>
-                                <tr class="text-white">
-                                    
-                                    <th scope="col">S No.</th>
-                                    <th scope="col">Song Name</th>
-                                    <th scope="col">Song Artist</th>
-                                    <th scope="col">Audio Song</th>
-                                    <th scope="col">Video Song</th>
-                                    <th scope="col">Genre</th>
-                                    <th scope="col">Released Date</th>
-                                    <th scope="col">Category</th>
-                                   
-                                    <th scope="col"></th>
-                                    <th scope="col"></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            <?php
-                            include 'config.php';
-                            $sql = "SELECT * FROM song";
-                            $result = mysqli_query($conn , $sql) or die ("Query Unsuccessful");
-                            if(mysqli_num_rows($result) > 0){
-                            ?>
-                                <tr>
-                                    <?php
-                                    while($row = mysqli_fetch_assoc($result)){
-                                    ?>
-                                     <td><?php echo $row['song_id'] ?></td>
-                                     <td><?php echo $row['song_name'] ?></td>
-                                     <td><?php echo $row['artist_name'] ?></td>
-                                     <td>
-                                     <audio controls>
-                                        <source src="<?php echo 'audio/'.$row['audio_song']?>" type="audio/ogg">
-                                     </audio>
-                                     </td>
-                                     <td>
-                                     <video width="320" height="240" controls>
-                                        <source src="<?php echo 'video/'.$row['video_song']?>" type="video/mp4">
-                                     </video>
-                                     </td>
-                                     <td><?php echo $row['genre'] ?></td>                                     
-                                     <td><?php echo $row['realesed_date'] ?></td>                                    
-                                     <td><?php echo $row['cat'] ?></td>
-                                     
-                                    
-                                     <td><a class="btn btn-sm btn-primary" href='edit_song.php?id=<?php echo $row['song_id'] ?>'>Edit</a></td>
-                                    
-                                    <td><a class="btn btn-sm btn-primary" href='delete_song.php?id=<?php echo $row['song_id'] ?>'>Delete</a></td>
-                                </tr>
+                        <div class="bg-secondary rounded h-100 p-4">
+                            
+                           
+                            
+                            <h6 class="mb-4">Add Albums</h6>
+                            <form action="save_album.php" method="POST" enctype="multipart/form-data">
+                                
+                            <div class="mb-3">
+                                <select class="form-select mb-3" aria-label="Default select example" name="album_name">
+                                <option selected>Album Name</option>
+                                <?php
+                                include 'config.php';
+                                $sql = "SELECT * FROM artist";
+                                $result = mysqli_query($conn , $sql) or die ("Query Unsuccessful");
+
+                                while($row = mysqli_fetch_assoc($result)){ ?>
+                                
+                                <option value="<?php echo $row['artist_id'];?>"><?php echo $row['artist_name']; ?></option>
                                 <?php } ?>
-                             </tbody>
-                             <?php }
-                            else{
-                            echo "<h4>No result found</h4>";
-                            }
-                            mysqli_close($conn);
-                            ?>   
-                            </tbody>
-                        </table>
-                    </div>
+                                </select>
+                               
+                            </div>
+                            <div class="mb-3">
+                                <select class="form-select mb-3" aria-label="Default select example" name="album_cat">
+                                <option selected>Album Name</option>
+                                <?php
+                                include 'config.php';
+                                $sql1 = "SELECT * FROM cat";
+                                $result1 = mysqli_query($conn , $sql1) or die ("Query Unsuccessful");
+
+                                while($row1 = mysqli_fetch_assoc($result1)){ ?>
+                                
+                                <option value="<?php echo $row1['cat_name'];?>"><?php echo $row1['cat_name']; ?></option>
+                                <?php } ?>
+                                </select>
+                               
+                            </div>
+                                <div class="mb-3">
+                                    <label for="exampleInputEmail1" class="form-label">Album Image</label>
+                                    <input type="file" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="album_image">
+                                   
+                                </div>
+                                
+                                
+                                <input class="submit btn btn-primary" type="submit" value="add" name="add"/>
+                            </form>
+                            
+                        </div>
                 </div>
-            </div>
-            <!-- Songs End -->
+                
+            <!-- Add album End -->
 
 
 
@@ -235,3 +218,7 @@
 </body>
 
 </html>
+
+
+
+
